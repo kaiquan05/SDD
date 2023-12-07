@@ -1,9 +1,34 @@
 #Code for Ngee Ann City game, a city building strategy game
 
 import random
-randomNum = random.randint(1,5)
 exitMainMenu = False
 
+buildingList = {'R': "Residential", 'I': "Industry", 'C': "Commercial", 'O': "Park", '*': "Road"}
+defaultCoin = 16
+Turn = 1
+scoring_rules = {
+    "Residential": {
+        "Industry": 1,
+        "Residential": 1,
+        "Commercial": 1,
+        "Park": 2,
+        "Road": 0
+    },
+    "Industry": {
+        "Industry": 1,
+        "Residential": 1  
+    },
+    "Commercial": {
+        "Commercial": 1,
+        "Residential": 1 
+    },
+    "Park": {
+        "Park": 1
+    },
+    "Road": {
+        "Road": 1
+    }
+}    
 #----------------------------------------------------------------------
 # draw_field()
 #
@@ -57,7 +82,24 @@ def draw_field():
         print('|')
         print(" +----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+")
 
+def getRandomBuildings():
+    r1 = random(list(buildingList))
+    r2 = random(list(buildingList))
+    return [r1,r2]
 
+def getOptions(i, lower, upper):
+    choice = input(i)
+    if not choice.isdigit():
+        return False
+    choice = int(choice)
+    if lower <= choice <= upper:
+        return choice
+    return False
+
+def gameTurn():
+    if Turn > len[field] * len[field][0]:
+        return True
+    
 #Main program
 while exitMainMenu == False:
     print('')
@@ -67,16 +109,28 @@ while exitMainMenu == False:
     print('[3] Display High Scores')
     print('[4] Exit Game')
 
-    playerMenuInput = int(input('Please input your choice: '))
+    while True:
+        choice = getOptions("Your Choice: ", 1, 4)
+        if choice is not False:
+            break
+        print('')
+        print('------------------Welcome to Ngee Ann City------------------')
+        print('[1] Start New Game')
+        print('[2] Load Saved Game')
+        print('[3] Display High Scores')
+        print('[4] Exit Game')
+        print ("Invalid choice. Please choose again")
 
-    if playerMenuInput == 1:
-        print('start new game')
-        draw_field()
-    elif playerMenuInput == 2:
-        print('load saved code')
-    elif playerMenuInput == 3:
-        print('Display highscore')
-    elif playerMenuInput == 4:
-        exitMainMenu = True
-        print('Exiting Ngee Ann City...')
+    match choice:
+        case 1: 
+            draw_field()
+            
+        case 2:
+            "Load new game"
+        case 3:
+            "Display high score"
+        case 4:
+            exitMainMenu = True
 
+
+print("Goodbye!")
