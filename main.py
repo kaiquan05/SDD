@@ -86,8 +86,8 @@ def draw_field():
 
 # get building function to get two random buildings for the user to select
 def getRandomBuildings():
-    r1 = random(list(buildingList))
-    r2 = random(list(buildingList))
+    r1 = random.choice(list(buildingList))
+    r2 = random.choice(list(buildingList))
     return [r1,r2]
 
 # validation function to check if user has entered a valid choice 
@@ -102,9 +102,8 @@ def getOptions(i, lower, upper):
 
 def gameTurn():
     # game menu
-    if State['Turn'] > len[field] * len[field][0]:
+    if State['Turn'] > 400:
         return True
-    draw_field()    
     print('')
     print('----------------------- Ngee Ann City-----------------------')
     print('[1] Build a Building')
@@ -122,28 +121,45 @@ def gameTurn():
     match choice:
         case 1: # build building
             bList = getRandomBuildings()
-            print(f'Building 1: {bList[0]}, Building 2: {bList[1]}')
-            ok = gameBuild("Your Choice: ")
-        case 2: # view current score
+            print(f'Building 1: {buildingList[bList[0]]}, Building 2: {buildingList[bList[1]]}')
+            while True:
+                ok = gameBuild("Your Choice: ","Build where? ",bList)
+                if not ok:
+                    break
+        case 2:
             print(State['Points'])
         case 3: # save game
             print("Save gameeeeee")
         case 4: # exit to main menu
             return True
-
+    return False
+def gameBuild(b,c,l):
+    building = input(b)
+    if building in buildingList and building in l:
+        print("Invalid building")
+        return True
+    
 # build building function
-def gameBuild(b):
-    coords = input("Build where? ") # user input for building location
+    coords = input(c) # user input for building location
     x = coords[0]
     if not x.isalpha(): # validation to ensure that a valid column is inputted
-        return False
-    x = ord(x.lower) - 96
+        print("X must be an alphabet")
+        return True
+    x = ord(x.lower()) - 96
     y = coords[1]
+    if not y.isnumeric():
+        print("Y must be a number")
+        return True
+    y = int(y)
     if (x <= 20 and y <= 20):  # validation to ensure that a valid row is inputted
-        print("")
-    if State['Turn'] is 1: # first turn
-        field[x][y] = b
+        if State['Turn'] is 1: # first turn
+            field[x - 1][y - 1] = building
+        State['Turn'] += 1    
+    else:
+        print("Invalid coordinates")
+        return True
 
+    return False
 #Main program
 while exitMainMenu == False:
     print('')
@@ -162,10 +178,11 @@ while exitMainMenu == False:
 
     match choice: # associate choice to respective game features
         case 1:  # start new game
-            draw_field()
-            gameFinish = gameTurn()
-            if gameFinish:
-                break
+            while True:
+                draw_field()
+                gameFinish = gameTurn()
+                if gameFinish:
+                    break
         case 2: # load a previously created game
             "Load new game"
         case 3: # display all high scores
