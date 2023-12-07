@@ -86,8 +86,8 @@ def draw_field():
         print(" +----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+")
 
 def getRandomBuildings():
-    r1 = random(list(buildingList))
-    r2 = random(list(buildingList))
+    r1 = random.choice(list(buildingList))
+    r2 = random.choice(list(buildingList))
     return [r1,r2]
 
 def getOptions(i, lower, upper):
@@ -100,9 +100,8 @@ def getOptions(i, lower, upper):
     return False
 
 def gameTurn():
-    if State['Turn'] > len[field] * len[field][0]:
+    if State['Turn'] > 400:
         return True
-    draw_field()    
     print('')
     print('----------------------- Ngee Ann City-----------------------')
     print('[1] Build a Building')
@@ -119,27 +118,44 @@ def gameTurn():
     match choice:
         case 1:
             bList = getRandomBuildings()
-            print(f'Building 1: {bList[0]}, Building 2: {bList[1]}')
-            ok = gameBuild("Your Choice: ")
+            print(f'Building 1: {buildingList[bList[0]]}, Building 2: {buildingList[bList[1]]}')
+            while True:
+                ok = gameBuild("Your Choice: ","Build where? ",bList)
+                if not ok:
+                    break
         case 2:
             print(State['Points'])
         case 3:
             print("Save gameeeeee")
         case 4:
             return True
-
-def gameBuild(b):
-    coords = input("Build where? ")
+    return False
+def gameBuild(b,c,l):
+    building = input(b)
+    if building in buildingList and building in l:
+        print("Invalid building")
+        return True
+    
+    coords = input(c)
     x = coords[0]
     if not x.isalpha():
-        return False
-    x = ord(x.lower) - 96
+        print("X must be an alphabet")
+        return True
+    x = ord(x.lower()) - 96
     y = coords[1]
+    if not y.isnumeric():
+        print("Y must be a number")
+        return True
+    y = int(y)
     if (x <= 20 and y <= 20):
-        print("")
-    if State['Turn'] is 1:
-        field[x][y] = b
+        if State['Turn'] is 1:
+            field[x - 1][y - 1] = building
+        State['Turn'] += 1    
+    else:
+        print("Invalid coordinates")
+        return True
 
+    return False
 #Main program
 while exitMainMenu == False:
     print('')
@@ -157,10 +173,11 @@ while exitMainMenu == False:
 
     match choice:
         case 1: 
-            draw_field()
-            gameFinish = gameTurn()
-            if gameFinish:
-                break
+            while True:
+                draw_field()
+                gameFinish = gameTurn()
+                if gameFinish:
+                    break
         case 2:
             "Load new game"
         case 3:
