@@ -3,6 +3,7 @@
 import random
 exitMainMenu = False
 
+# list of buildings + respective points
 buildingList = {'R': "Residential", 'I': "Industry", 'C': "Commercial", 'O': "Park", '*': "Road"}
 State = {
     "Turn" : 1,
@@ -69,18 +70,10 @@ def draw_field():
         print(row_names[row], end = '')
         for col in range(len(field[row])):
             print('|', end = '')
-            if field[row][col] == None:
+            if field[row][col] == None: # checking if the cell is occupied
                 print('    ', end = '')
             else:
                 print('{:5s}'.format(field[row][col][0]), end = '')
-        print('|')
-        print(' ', end = '')
-        for col in range(len(field[row])):
-            print('|', end = '')
-            if field[row][col] == None:
-                print('    ', end = '')
-            else:
-                print('15/15', end = '') # change this to print current HP and max HP
         print('|')
         print(" +----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+")
 
@@ -133,26 +126,29 @@ def gameTurn():
         case 4: # exit to main menu
             return True
     return False
+
+# build building function
 def gameBuild(b,c,l):
     building = input(b)
+    # validation to check if the entered building code is valid and in the list
     if building in buildingList and building in l:
         print("Invalid building")
         return True
     
-# build building function
     coords = input(c) # user input for building location
     x = coords[0]
-    if not x.isalpha(): # validation to ensure that a valid column is inputted
+    if not x.isalpha(): # validation to ensure that a valid row is inputted
         print("X must be an alphabet")
         return True
-    x = ord(x.lower()) - 96
+    x = ord(x.lower()) - 96 # converting alphabet to numerical value
     y = coords[1]
     if not y.isnumeric():
-        print("Y must be a number")
+        print("Y must be a number") # validation to ensure that a valid column is inputted
         return True
     y = int(y)
-    if (x <= 20 and y <= 20):  # validation to ensure that a valid row is inputted
-        if State['Turn'] is 1: # first turn
+    # update the field with the building name
+    if (x <= 20 and y <= 20):
+        if State['Turn'] is 1:
             field[x - 1][y - 1] = building
         State['Turn'] += 1    
     else:
@@ -160,6 +156,7 @@ def gameBuild(b,c,l):
         return True
 
     return False
+
 #Main program
 while exitMainMenu == False:
     print('')
