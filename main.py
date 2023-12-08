@@ -172,7 +172,11 @@ while exitMainMenu == False:
         print ("Invalid choice. Please choose again")
 
     match choice:
-        case 1: 
+        case 1:
+            for row in range(len(field)):
+                for item in range(len(field[row])):
+                    if field[row][item] is not None:
+                        field[row][item] = None
             while True:
                 draw_field()
                 gameFinish = gameTurn()
