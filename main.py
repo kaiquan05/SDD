@@ -131,10 +131,12 @@ def gameTurn():
 def gameBuild(b,c,l):
     building = input(b)
     # validation to check if the entered building code is valid and in the list
-    if building not in buildingList or building not in l:
+    if building in buildingList and building in l:
         print("Invalid building")
         return True
-    
+
+    building_name = l[int(building_number) - 1]  # get the building name from the list
+
     coords = input(c) # user input for building location
     x = coords[0]
     if not x.isalpha(): # validation to ensure that a valid row is inputted
@@ -149,7 +151,7 @@ def gameBuild(b,c,l):
     # update the field with the building name
     if (x <= 20 and y <= 20):
         if State['Turn'] is 1:
-            field[x - 1][y - 1] = buildingList[building]
+            field[x - 1][y - 1] = building
         State['Turn'] += 1    
     else:
         print("Invalid coordinates")
