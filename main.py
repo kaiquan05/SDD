@@ -3,6 +3,7 @@
 import random
 exitMainMenu = False
 
+# list of buildings + respective points
 buildingList = {'R': "Residential", 'I': "Industry", 'C': "Commercial", 'O': "Park", '*': "Road"}
 State = {
     "Turn" : 1,
@@ -36,8 +37,7 @@ pointsRules = {
 # draw_field()
 #
 #    Draws the field of play
-#    The column numbers only go to 3 since players can only place units
-#      in the first 3 columns
+#
 #----------------------------------------------------------------------
 field = [ [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
           [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None],
@@ -70,26 +70,20 @@ def draw_field():
         print(row_names[row], end = '')
         for col in range(len(field[row])):
             print('|', end = '')
-            if field[row][col] == None:
+            if field[row][col] == None: # checking if the cell is occupied
                 print('    ', end = '')
             else:
                 print('{:5s}'.format(field[row][col][0]), end = '')
         print('|')
-        print(' ', end = '')
-        for col in range(len(field[row])):
-            print('|', end = '')
-            if field[row][col] == None:
-                print('    ', end = '')
-            else:
-                print('15/15', end = '') # change this to print current HP and max HP
-        print('|')
         print(" +----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+")
 
+# get building function to get two random buildings for the user to select
 def getRandomBuildings():
     r1 = random.choice(list(buildingList))
     r2 = random.choice(list(buildingList))
     return [r1,r2]
 
+# validation function to check if user has entered a valid choice 
 def getOptions(i, lower, upper):
     choice = input(i)
     if not choice.isdigit():
@@ -100,6 +94,7 @@ def getOptions(i, lower, upper):
     return False
 
 def gameTurn():
+    # game menu
     if State['Turn'] > 400:
         return True
     print('')
@@ -110,13 +105,14 @@ def gameTurn():
     print('[4] Exit to Main Menu')
 
     while True:
+        # validation to checek that user has entered a valid choice
         choice = getOptions("Your Choice: ", 1, 4)
         if choice is not False:
             break
         print ("Invalid choice. Please choose again")
     
     match choice:
-        case 1:
+        case 1: # build building
             bList = getRandomBuildings()
             print(f'Building 1: {buildingList[bList[0]]}, Building 2: {buildingList[bList[1]]}')
             while True:
@@ -125,28 +121,32 @@ def gameTurn():
                     break
         case 2:
             print(State['Points'])
-        case 3:
+        case 3: # save game
             print("Save gameeeeee")
-        case 4:
+        case 4: # exit to main menu
             return True
     return False
+
+# build building function
 def gameBuild(b,c,l):
     building = input(b)
+    # validation to check if the entered building code is valid and in the list
     if building in buildingList and building in l:
         print("Invalid building")
         return True
     
-    coords = input(c)
+    coords = input(c) # user input for building location
     x = coords[0]
-    if not x.isalpha():
+    if not x.isalpha(): # validation to ensure that a valid row is inputted
         print("X must be an alphabet")
         return True
-    x = ord(x.lower()) - 96
+    x = ord(x.lower()) - 96 # converting alphabet to numerical value
     y = coords[1]
     if not y.isnumeric():
-        print("Y must be a number")
+        print("Y must be a number") # validation to ensure that a valid column is inputted
         return True
     y = int(y)
+    # update the field with the building name
     if (x <= 20 and y <= 20):
         if State['Turn'] is 1:
             field[x - 1][y - 1] = building
@@ -156,6 +156,7 @@ def gameBuild(b,c,l):
         return True
 
     return False
+
 #Main program
 while exitMainMenu == False:
     print('')
@@ -166,13 +167,14 @@ while exitMainMenu == False:
     print('[4] Exit Game')
 
     while True:
+        # validation to checek that user has entered a valid choice
         choice = getOptions("Your Choice: ", 1, 4)
         if choice is not False:
             break
         print ("Invalid choice. Please choose again")
 
-    match choice:
-        case 1:
+    match choice: # associate choice to respective game features
+        case 1:  # start new game
             for row in range(len(field)):
                 for item in range(len(field[row])):
                     if field[row][item] is not None:
@@ -182,11 +184,11 @@ while exitMainMenu == False:
                 gameFinish = gameTurn()
                 if gameFinish:
                     break
-        case 2:
+        case 2: # load a previously created game
             "Load new game"
-        case 3:
+        case 3: # display all high scores
             "Display high score"
-        case 4:
+        case 4: # exit the game into main menu
             exitMainMenu = True
 
 
