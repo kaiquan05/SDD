@@ -73,7 +73,7 @@ def draw_field():
             if field[row][col] == None: # checking if the cell is occupied
                 print('    ', end = '')
             else:
-                print('{:5s}'.format(field[row][col][0]), end = '')
+                print('{:4s}'.format(field[row][col][0]), end = '')
         print('|')
         print(" +----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+")
 
@@ -131,7 +131,7 @@ def gameTurn():
 def gameBuild(b,c,l):
     building = input(b)
     # validation to check if the entered building code is valid and in the list
-    if building in buildingList and building in l:
+    if building not in buildingList or building not in l:
         print("Invalid building")
         return True
     
@@ -149,7 +149,7 @@ def gameBuild(b,c,l):
     # update the field with the building name
     if (x <= 20 and y <= 20):
         if State['Turn'] is 1:
-            field[x - 1][y - 1] = building
+            field[x - 1][y - 1] = buildingList[building]
         State['Turn'] += 1    
     else:
         print("Invalid coordinates")
