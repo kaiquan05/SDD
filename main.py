@@ -122,6 +122,22 @@ def calculatePoints():
 
     State['Points'] = p
             
+def save_game(): 
+    file=open('SaveNgeeAnnCity.txt','w') 
+    file.write(str(State['Turn'])) #save turn 
+    file.write('\n') 
+    file.write(str(State['Points'])) #save points
+    file.write('\n') 
+    file.write(str(State['Coins'])) #save coins  
+    file.write('\n') 
+    for i in range(len(field)): # save field
+        for j in range(len(field[i])):
+            if field[i][j] is not None:
+                # save cell information by splitting with ;
+                file.write(';'.join(map(str, [str(item) for item in field[i][j]] + [str(i), str(j)])) + '\n')
+
+    file.close()
+    print("Game saved.")
 
 def gameTurn():
     # game menu
@@ -159,8 +175,8 @@ def gameTurn():
             displayPoints = False  
         elif choice == 3:
             # save game
-            print("Save gameeeeee")
-            redraw = False
+            save_game()
+            return True
         elif choice == 4:
             return True
     else:
