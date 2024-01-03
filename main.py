@@ -83,8 +83,7 @@ def draw_field():
                 print('{:4s}'.format(field[row][col][0]), end = '')
         print('|')
         print(" +----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+")
-    print()
-    print(f"Turn: {State['Turn']}" f"  Points: {State['Points']}" f"  Coins: {State['Coins']}") # display turns
+    print("\n"f"Turn: {State['Turn']}" f"  Points: {State['Points']}" f"  Coins: {State['Coins']}") # display turns
 
 # get building function to get two random buildings for the user to select
 def getRandomBuildings():
@@ -135,12 +134,10 @@ def gameTurn():
     print('----------------------- Ngee Ann City-----------------------')
     draw_field()
     bList = getRandomBuildings()
-    print(f'Turn: {State["Turn"]}')
     print(f'[1] Build a {buildingList[bList[0]]}')
     print(f'[2] Build a {buildingList[bList[1]]}')
-    print('[3] See Current Score')
-    print('\n[4] Save Game')
-    print('[5] Exit to Main Menu')
+    print('\n[3] Save Game')
+    print('[4] Exit to Main Menu')
     if displayPoints:
         calculatePoints()
         print(f'Current Points: {State["Points"]}')\
@@ -161,15 +158,10 @@ def gameTurn():
                     break
             displayPoints = False  
         elif choice == 3:
-            # see current score
-            calculatePoints()
-            print(f"Current Points : {State['Points']}")
-            displayPoints = True  
-        elif choice == 4:
             # save game
             print("Save gameeeeee")
             redraw = False
-        elif choice == 5:
+        elif choice == 4:
             return True
     else:
         print("Invalid choice. Please choose again")
@@ -219,6 +211,8 @@ def gameBuild(b,c,l):
                 print("Cell is occupied")
                 return True
         State['Turn'] += 1    
+        State['Coins'] -= 1    
+
     else:
         print("Invalid coordinates")
         return True
