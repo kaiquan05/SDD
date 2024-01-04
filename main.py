@@ -142,24 +142,24 @@ def save_game():
     file.close()
     print("Game saved.")
 
-def load_game(State): 
-    load_list = [] 
-    file =  open("SaveNgeeAnnCity.txt","r") 
-    for i in file: 
-        i = i.strip() 
-        load_list.append(i) 
-     
-    file.close() 
-    for n in range(3,len(load_list)): 
-        load_list[n]=load_list[n].split(';') 
- 
-        field[int(load_list[n][1])][int(load_list[n][2])]=[str(load_list[n][0])] 
-         
- 
-    State['Turn']=int(load_list[0]) 
-    State['Points']=int(load_list[1]) 
-    State['Coins']=int(load_list[2])            
+def load_game():
+    load_list = []
+    file = open('SaveNgeeAnnCity.txt', 'r') #read save file
+    for i in file:
+        i = i.strip()
+        load_list.append(i)
+
+    file.close()
+    for n in range(3, len(load_list)):
+        load_list[n] = load_list[n].split(';')
+        field[int(load_list[n][1])][int(load_list[n][2])]=[str(load_list[n][0])]
+
+    State['Turn'] = int(load_list[0])
+    State['Points'] = int(load_list[1])
+    State['Coins'] = int(load_list[2])
     return
+
+
 
 def gameTurn():
     # game menu
@@ -284,12 +284,7 @@ while exitMainMenu == False:
                 if gameFinish:
                     break
         case 2: # load a previously created game
-            "Loading old game"
-            load_game(State)
-            while True:
-                gameFinish = gameTurn()
-                if gameFinish:
-                    break
+            "Load new game"
         case 3: # display all high scores
             "Display high score"
         case 4: # exit the game into main menu
