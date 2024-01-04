@@ -284,7 +284,11 @@ while exitMainMenu == False:
                 if gameFinish:
                     break
         case 2: # load a previously created game
-            "Load new game"
+            load_game
+            while True:
+                gameFinish = gameTurn()
+                if gameFinish:
+                    break
         case 3: # display all high scores
             "Display high score"
         case 4: # exit the game into main menu
