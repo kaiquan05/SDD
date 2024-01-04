@@ -281,7 +281,7 @@ while exitMainMenu == False:
                 if gameFinish:
                     break
         case 2: # load a previously created game
-            load_game
+            load_game()
             while True:
                 gameFinish = gameTurn()
                 if gameFinish:
