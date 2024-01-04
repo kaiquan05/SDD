@@ -166,7 +166,7 @@ def gameTurn():
     if State['Turn'] > 400:
         return True
     
-    displayPoints = False  # Flag to control redrawing the game state
+    calculatePoints()
 
     print('')
     print('----------------------- Ngee Ann City-----------------------')
@@ -176,9 +176,6 @@ def gameTurn():
     print(f'[2] Build a {buildingList[bList[1]]}')
     print('\n[3] Save Game')
     print('[4] Exit to Main Menu')
-    if displayPoints:
-        calculatePoints()
-        print(f'Current Points: {State["Points"]}')\
     
     while True:
         # validation to checek that user has entered a valid choice
@@ -194,7 +191,7 @@ def gameTurn():
                 ok = gameBuild(bList, "Build where? ", building_choice)
                 if not ok:
                     break
-            displayPoints = False  
+            
         elif choice == 3:
             # save game
             save_game()
