@@ -157,7 +157,40 @@ def load_game():
     State['Turn'] = int(load_list[0])
     State['Points'] = int(load_list[1])
     State['Coins'] = int(load_list[2])
+    print("Loading game...")
     return
+
+def save_score():
+    file=open('SaveScoreNgeeAnnCity.txt','w') #writing new highscore to notepad
+    for i in range(1, 12):
+        # Write the string "test;" followed by the incremented number and a newline character
+        file.write(f'test;{i}\n')
+
+    inputName = input("Please input a name to save game score: ")
+    print(f'Game name: {inputName}')
+    print(f'Score: {State["Points"]}')
+    load_list = []
+    file=open('SaveScoreNgeeAnnCity.txt','r') #read file
+    for i in file:
+        i = i.strip()
+        load_list.append(i)
+    file.close()
+    load_list.append([str(inputName), str(State["Points"])]) #add new score to list
+
+    load_list.sort(key=lambda x: x[1], reverse = True) #sort by second element, points, instead of by game name
+    if len(load_list) > 10:
+        load_list = load_list[:10]  #removes all other elements in list except for first 10(aka top 10)
+    
+    file=open('SaveScoreNgeeAnnCity.txt','w') #writing new highscore to notepad
+    file.write("") #clears entire notepad
+    for n in range(0,len(load_list)):
+        file.write(str(load_list[n]))
+        file.write(';') 
+        file.write(str(load_list[n]))
+        file.write('\n') 
+
+    file.close()
+    print('Game name and score saved.')
 
 
 
@@ -264,6 +297,8 @@ while exitMainMenu == False:
     print('[3] Display High Scores')
     print('[4] Exit Game')
 
+    save_score()
+
     while True:
         # validation to checek that user has entered a valid choice
         choice = getOptions("Your Choice: ", 1, 4)
@@ -282,14 +317,17 @@ while exitMainMenu == False:
             while True:
                 gameFinish = gameTurn()
                 if gameFinish:
+                    "save_score"
                     break
         case 2: # load a previously created game
             load_game()
             while True:
                 gameFinish = gameTurn()
                 if gameFinish:
+                    "save_score"
                     break
         case 3: # display all high scores
+
             "Display high score"
         case 4: # exit the game into main menu
             exitMainMenu = True
