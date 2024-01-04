@@ -139,6 +139,25 @@ def save_game():
     file.close()
     print("Game saved.")
 
+def load_game():
+    load_list = []
+    file = open('SaveNgeeAnnCity.txt', 'r') #read save file
+    for i in file:
+        i = i.strip()
+        load_list.append(i)
+
+    file.close()
+    for n in range(3, len(load_list)):
+        load_list[n] = load_list[n].split(';')
+        field
+
+    State['Turn'] = int(load_list[0])
+    State['Points'] = int(load_list[1])
+    State['Coins'] = int(load_list[2])
+    return
+
+
+
 def gameTurn():
     # game menu
     if State['Turn'] > 400:
