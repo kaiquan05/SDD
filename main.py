@@ -189,38 +189,47 @@ def load_game():
     return
 
 def save_score():
-    file=open('SaveScoreNgeeAnnCity.txt','w') #writing new highscore to notepad
-    for i in range(1, 12):
-        # Write the string "test;" followed by the incremented number and a newline character
-        file.write(f'test;{i}\n')
+    # Read existing scores
+    load_list = []
+    with open('SaveScoreNgeeAnnCity.txt', 'r') as file:
+        for line in file:
+            name, score = line.strip().split(';')
+            load_list.append([name, int(score)])
 
+    # Get new score
     inputName = input("Please input a name to save game score: ")
     print(f'Game name: {inputName}')
     print(f'Score: {State["Points"]}')
-    load_list = []
-    file=open('SaveScoreNgeeAnnCity.txt','r') #read file
-    for i in file:
-        i = i.strip()
-        load_list.append(i)
-    file.close()
-    load_list.append([str(inputName), str(State["Points"])]) #add new score to list
+    load_list.append([inputName, State["Points"]])
 
-    load_list.sort(key=lambda x: x[1], reverse = True) #sort by second element, points, instead of by game name
+    # Sort scores
+    load_list.sort(key=lambda x: x[1], reverse=True)
+
+    # Keep only top 10 scores
     if len(load_list) > 10:
-        load_list = load_list[:10]  #removes all other elements in list except for first 10(aka top 10)
-    
-    file=open('SaveScoreNgeeAnnCity.txt','w') #writing new highscore to notepad
-    file.write("") #clears entire notepad
-    for n in range(0,len(load_list)):
-        file.write(str(load_list[n]))
-        file.write(';') 
-        file.write(str(load_list[n]))
-        file.write('\n') 
+        load_list = load_list[:10]
 
-    file.close()
+    # Write scores back to file
+    with open('SaveScoreNgeeAnnCity.txt', 'w') as file:
+        for name, score in load_list:
+            file.write(f'{name};{score}\n')
+
     print('Game name and score saved.')
 
 
+def get_highscores():
+    # Read existing scores
+    load_list = []
+    with open('SaveScoreNgeeAnnCity.txt', 'r') as file:
+        for line in file:
+            name, score = line.strip().split(';')
+            load_list.append([name, int(score)])
+
+    print("----- Highscores -----")
+    for n in load_list:
+        print(f'{n[0]}: {n[1]}')
+
+    
 
 def gameTurn():
     # game menu
@@ -323,8 +332,6 @@ while exitMainMenu == False:
     print('[3] Display High Scores')
     print('[4] Exit Game')
 
-    save_score()
-
     while True:
         # validation to checek that user has entered a valid choice
         choice = getOptions("Your Choice: ", 1, 4)
@@ -343,18 +350,17 @@ while exitMainMenu == False:
             while True:
                 gameFinish = gameTurn()
                 if gameFinish:
-                    "save_score"
+                    save_score()
                     break
         case 2: # load a previously created game
             load_game()
             while True:
                 gameFinish = gameTurn()
                 if gameFinish:
-                    "save_score"
+                    save_score()
                     break
         case 3: # display all high scores
-
-            "Display high score"
+            get_highscores()
         case 4: # exit the game into main menu
             exitMainMenu = True
 
