@@ -130,14 +130,36 @@ def save_game():
     file.write('\n') 
     file.write(str(State['Coins'])) #save coins  
     file.write('\n') 
-    for i in range(len(field)): # save field
-        for j in range(len(field[i])):
-            if field[i][j] is not None:
-                # save cell information by splitting with ;
-                file.write(';'.join(map(str, [str(item) for item in field[i][j]] + [str(i), str(j)])) + '\n')
-
+    for i in range(len(field)): 
+        for n in range(len(field[i])): #save stuff in field that is not none as well as its coordinate 
+            if field[i][n] != None: 
+                file.write(str(field[i][n][0])) 
+                file.write(';') 
+                file.write(str(i)) 
+                file.write(';') 
+                file.write(str(n)) 
+                file.write('\n')         
     file.close()
     print("Game saved.")
+
+def load_game(State): 
+    load_list = [] 
+    file =  open("SaveNgeeAnnCity.txt","r") 
+    for i in file: 
+        i = i.strip() 
+        load_list.append(i) 
+     
+    file.close() 
+    for n in range(3,len(load_list)): 
+        load_list[n]=load_list[n].split(';') 
+ 
+        field[int(load_list[n][1])][int(load_list[n][2])]=[str(load_list[n][0])] 
+         
+ 
+    State['Turn']=int(load_list[0]) 
+    State['Points']=int(load_list[1]) 
+    State['Coins']=int(load_list[2])            
+    return
 
 def gameTurn():
     # game menu
@@ -262,7 +284,12 @@ while exitMainMenu == False:
                 if gameFinish:
                     break
         case 2: # load a previously created game
-            "Load new game"
+            "Loading old game"
+            load_game(State)
+            while True:
+                gameFinish = gameTurn()
+                if gameFinish:
+                    break
         case 3: # display all high scores
             "Display high score"
         case 4: # exit the game into main menu
