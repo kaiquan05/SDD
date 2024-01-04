@@ -39,6 +39,15 @@ pointsRules = {
         "Road": 1
     }
 }  
+coinsRules = {
+    "Industry": {
+        "Residential": 1  
+    },
+    "Commercial": {
+        "Residential": 1 
+    }
+}  
+
 #----------------------------------------------------------------------
 # draw_field()
 #
@@ -119,8 +128,27 @@ def calculatePoints():
                 # Ensure the building type and adjacent building type are in pointsRules
                 if building_type in pointsRules and adj_building_type in pointsRules[building_type]:
                     p += pointsRules[building_type][adj_building_type]
-
     State['Points'] = p
+
+def calculateCoins():
+    c = 0
+    for row in range(len(field)):
+        for col in range(len(field[row])):
+            building_code = field[row][col]
+            if building_code is None:
+                continue
+            building_type = buildingList[building_code]
+            adj_buildings_codes = checkOrthogonal(row, col)
+
+            for adj_building_code in adj_buildings_codes:
+                if adj_building_code is None:
+                    continue
+
+                adj_building_type = buildingList[adj_building_code]
+                # Ensure the building type and adjacent building type are in coinsRules
+                if building_type in coinsRules and adj_building_type in coinsRules[building_type]:
+                    c += coinsRules[building_type][adj_building_type]
+    return c
             
 def save_game(): 
     file=open('SaveNgeeAnnCity.txt','w') 
@@ -246,7 +274,8 @@ def gameBuild(b,c,l):
                 print("Cell is occupied")
                 return True
         State['Turn'] += 1    
-        State['Coins'] -= 1    
+        State['Coins'] -= 1
+        State['Coins'] += calculateCoins()
 
     else:
         print("Invalid coordinates")
