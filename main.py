@@ -149,7 +149,7 @@ def load_game():
     file.close()
     for n in range(3, len(load_list)):
         load_list[n] = load_list[n].split(';')
-        field
+        field[int(load_list[n][1])][int(load_list[n][2])]=[str(load_list[n][0])]
 
     State['Turn'] = int(load_list[0])
     State['Points'] = int(load_list[1])
@@ -281,7 +281,11 @@ while exitMainMenu == False:
                 if gameFinish:
                     break
         case 2: # load a previously created game
-            "Load new game"
+            load_game
+            while True:
+                gameFinish = gameTurn()
+                if gameFinish:
+                    break
         case 3: # display all high scores
             "Display high score"
         case 4: # exit the game into main menu
