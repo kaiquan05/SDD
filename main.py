@@ -130,12 +130,15 @@ def save_game():
     file.write('\n') 
     file.write(str(State['Coins'])) #save coins  
     file.write('\n') 
-    for i in range(len(field)): # save field
-        for j in range(len(field[i])):
-            if field[i][j] is not None:
-                # save cell information by splitting with ;
-                file.write(';'.join(map(str, [str(item) for item in field[i][j]] + [str(i), str(j)])) + '\n')
-
+    for i in range(len(field)): 
+        for n in range(len(field[i])): #save stuff in field that is not none as well as its coordinate 
+            if field[i][n] != None: 
+                file.write(str(field[i][n][0])) 
+                file.write(';') 
+                file.write(str(i)) 
+                file.write(';') 
+                file.write(str(n)) 
+                file.write('\n')         
     file.close()
     print("Game saved.")
 
