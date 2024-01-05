@@ -180,7 +180,7 @@ def load_game():
     file.close()
     for n in range(3, len(load_list)):
         load_list[n] = load_list[n].split(';')
-        field[int(load_list[n][1])][int(load_list[n][2])]=[str(load_list[n][0])]
+        field[int(load_list[n][1])][int(load_list[n][2])]=str(load_list[n][0])
 
     State['Turn'] = int(load_list[0])
     State['Points'] = int(load_list[1])
