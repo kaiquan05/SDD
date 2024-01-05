@@ -297,8 +297,12 @@ def gameBuild(b,c,l):
     x = ord(x.lower()) - 96  # converting alphabet to numerical value
     if len(coords) == 3:
         y = coords[1] + coords[2]
+    elif len(coords) == 2:
+        y = coords[1]
     else:
-        y = coords[1]   
+        print("Invalid coordinates")
+        return True
+    
     if not y.isnumeric():
         print("Second and third character must be a number")  # validation to ensure that a valid column is inputted
         return True
