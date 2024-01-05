@@ -295,9 +295,12 @@ def gameBuild(b,c,l):
         print("First character must be a letter")
         return True
     x = ord(x.lower()) - 96  # converting alphabet to numerical value
-    y = coords[1]
+    if len(coords) == 3:
+        y = coords[1] + coords[2]
+    else:
+        y = coords[1]   
     if not y.isnumeric():
-        print("Second character must be a number")  # validation to ensure that a valid column is inputted
+        print("Second and third character must be a number")  # validation to ensure that a valid column is inputted
         return True
     y = int(y)
     # update the field with the building name
